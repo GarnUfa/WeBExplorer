@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Explorer.Models
+{
+    public class FilesModel
+    {
+        [Key]
+        public int ID { get; set; }
+        public string FileExtensions { get; set; }
+        public string FoldersID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Content { get; set; }
+    }
+}
