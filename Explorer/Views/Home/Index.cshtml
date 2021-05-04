@@ -1,1 +1,16 @@
-﻿<h1>gbh</h1>
+﻿<div class="col-md-12">
+    <h1>Kendo</h1>
+    <div class="col-md-12">
+       <p>Hi - <strong id="kendoVersion"></strong></p>
+    </div>
+    <input id="cmbEmploee" />
+</div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#kendoVersion").text(kendo.version);
+            $("#cmbEmploee").kendoComboBox({
+
+            });
+        });
+    </script>
