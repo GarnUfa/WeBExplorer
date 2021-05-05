@@ -47,6 +47,9 @@ namespace Explorer.Controllers
         {
             return View();
         }
-
+        public IActionResult Explorer()
+        {
+            return View();
+        }
     }
 }
