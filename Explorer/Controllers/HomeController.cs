@@ -22,15 +22,11 @@ namespace Explorer.Controllers
             _logger = logger;
         }
         [HttpPost]
-        public async Task<IActionResult> Create(FoldersModel folders)
+        public async Task<IActionResult> Index(string folderName)
         {
-            
-            context.Folders.Add(folders);
+            FoldersModel folder = new FoldersModel() { Name = folderName };
+            context.Folders.Add(folder);
             await context.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }   
-        public IActionResult Create()
-        {
             return View();
         }
         //public async Task<IActionResult> Index()
@@ -42,12 +38,16 @@ namespace Explorer.Controllers
         {
             return View();
         }
-
+        [HttpGet]
         public IActionResult Privacy()
         {
             return View();
         }
         public IActionResult Explorer()
+        {
+            return View();
+        }
+        public IActionResult Add()
         {
             return View();
         }

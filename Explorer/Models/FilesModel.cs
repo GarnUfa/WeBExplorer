@@ -10,10 +10,10 @@ namespace Explorer.Models
     {
         [Key]
         public int ID { get; set; }
-        public string FileExtensions { get; set; }
-        public string FoldersID { get; set; }
+        public int? FileExtensionsModelID { get; set; }
+        public int? FoldersModelID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Content { get; set; }
+        public byte[] Content { get; set; }
     }
 }

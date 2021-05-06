@@ -19,7 +19,7 @@
             <div id="treeview-telerik"></div>
         </div>
     </div>
-    <script id="treeview" type="text/kendo-ui-template">
+    @*<script id="treeview" type="text/kendo-ui-template">
 
         # if (!item.items && item.spriteCssClass) { #
         #: item.text #
@@ -34,11 +34,10 @@
         <span class="k-sprite folder"></span>
         #: item.text #
         # } #
-    </script>
+    </script>*@
 
     <script>
         $("#treeview-kendo").kendoTreeView({
-            template: kendo.template($("#treeview").html()),
             dataSource: [{
                 id: 1, text: "My Documents", expanded: true, spriteCssClass: "rootfolder", items: [
                     {
@@ -64,29 +63,6 @@
             loadOnDemand: true
         });
 
-        $("#treeview-telerik").kendoTreeView({
-            template: kendo.template($("#treeview").html()),
-            dataSource: [{
-                id: 1, text: "My Documents", expanded: true, items: [
-                    {
-                        id: 2, text: "New Web Site", expanded: true, items: [
-                            { id: 3, text: "mockup.pdf" },
-                            { id: 4, text: "Research.pdf" },
-                        ]
-                    },
-                    {
-                        id: 5, text: "Reports", expanded: true, items: [
-                            { id: 6, text: "May.pdf" },
-                            { id: 7, text: "June.pdf" },
-                            { id: 8, text: "July.pdf" }
-                        ]
-                    }
-                ]
-            }],
-            dragAndDrop: true,
-            checkboxes: true,
-            loadOnDemand: true
-        });
         // Delete button behavior
         $(document).on("click", ".kendo-icon", function (e) {
             e.preventDefault();

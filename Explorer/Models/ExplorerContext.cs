@@ -13,13 +13,11 @@ namespace Explorer.Models
         public DbSet<FileExtensionsModel> FileExtensions { get; set; }
         public ExplorerContext(DbContextOptions<ExplorerContext> options) : base(options)
         {
-            
+            Database.EnsureCreated();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<FoldersModel>().HasData(new FoldersModel());
-            modelBuilder.Entity<FilesModel>().HasData(new FilesModel());
-            modelBuilder.Entity<FileExtensionsModel>().HasData(new FileExtensionsModel());
+
         }
 
     }
