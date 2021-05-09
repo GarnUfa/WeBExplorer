@@ -1,16 +1,42 @@
-﻿<div class="col-md-12">
+﻿<script>
+
+    $('#loadFileq').click(function () {
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Add")",
+            //data: { 'test': 'hui' },
+            success: function () {
+                alert("@Url.Action("Add")")
+            }
+        });
+    });
+</script>
+<div class="col-md-12">
     <h1>Kendo</h1>
     <div class="col-md-12">
-       <p>Hi - <strong id="kendoVersion"></strong></p>
+        <p>Hi - <strong id="kendoVersion"></strong></p>
     </div>
     <input id="cmbEmploee" />
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#kendoVersion").text(kendo.version);
+        $("#cmbEmploee").kendoComboBox({
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#kendoVersion").text(kendo.version);
-            $("#cmbEmploee").kendoComboBox({
-
-            });
         });
-    </script>
+    });
+</script>
+<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+    <ul class="navbar-nav flex-grow-1">
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Explorer">test</a>
+        </li>
+    </ul>
+</div>
+
+
+
+

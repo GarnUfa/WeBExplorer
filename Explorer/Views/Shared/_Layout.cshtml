@@ -14,24 +14,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
 </head>
+
 <body>
+
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                @await Html.PartialAsync("CreateFolders")
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Создать папку</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Explorer">test</a>
-                        </li>
-                    </ul>
-                </div>
+            <div class="container input-group">
+                @await Html.PartialAsync("_CreateFolders")
+                <label class="btn btn-sm" id="loadFile44">Удалить папку</label>
+                <label for="loadFile" class="btn btn-sm" value="Загрузить файл">Загрузить файл</label>
+                <form id="form" name="form" asp-controller="Home" asp-action="AddFileFromDB" enctype="multipart/form-data" method="post" hidden="hidden">
+                    <div class="custom-file " hidden="hidden">
+                        <input type="file" name="file" class="custom-file-input" id="loadFile" multiple onchange="uploadFiles()" ;>
+                    </div>
+                </form>
+                <input class="btn btn-sm" id="loadFile2" value="Скачать файл">
+                <input class="btn btn-sm" id="loadFile3" value="Удалить файл">
+                <input class="btn btn-sm" id="loadFile4" value="Переименовать">
             </div>
         </nav>
     </header>
@@ -42,5 +41,96 @@
     </div>
 
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        function uploadFiles() {
+            alert("ds");
+            var input = document.getElementById("loadFile");
+            var files = input.files;
+            var formData = new FormData();
+
+            for (var i = 0; i != files.length; i++) {
+                alert(i);
+                formData.append("file", files[i]);
+            }
+
+            $.ajax(
+                {
+                    url: "/Home/AddFileFromDB",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: "POST",
+                    success: function (data) {
+                        alert("Files Uploaded!");
+                    },
+                    error: function (jqXHR, exception) {
+                        var msg = '';
+                        if (jqXHR.status === 0) {
+                            msg = 'Not connect.\n Verify Network.';
+                        } else if (jqXHR.status == 404) {
+                            msg = 'Requested page not found. [404]';
+                        } else if (jqXHR.status == 500) {
+                            msg = 'Internal Server Error [500].';
+                        } else if (exception === 'parsererror') {
+                            msg = 'Requested JSON parse failed.';
+                        } else if (exception === 'timeout') {
+                            msg = 'Time out error.';
+                        } else if (exception === 'abort') {
+                            msg = 'Ajax request aborted.';
+                        } else {
+                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                        }
+                        alert(msg);
+                    }
+                }
+            );
+        }
+    </script>
+    <form id="form" name="form" asp-controller="Home" asp-action="AddFileFromDB" enctype="multipart/form-data" method="post">
+
+        <input type="file" name="file">
+        <input type="submit" name="file" value="load">
+
+    </form>
+    @*<script>
+               function uploadFiles(inputId) {
+                    var formData = new FormData();
+                    formData.append('file', $('#loadFile')[0].files[0]); // myFile is the input type="file" control
+
+                    var _url = '/Home/AddFileFromDB';
+
+                    $.ajax({
+                        url: _url,
+                        type: 'POST',
+                        data: formData,
+                        processData: false,  // tell jQuery not to process the data
+                        contentType: false,  // tell jQuery not to set contentType
+                        success: function (result) {
+                        },
+                        error: function (jqXHR) {
+                            var msg = '';
+                            if (jqXHR.status === 0) {
+                                msg = 'Not connect.\n Verify Network.';
+                            } else if (jqXHR.status == 404) {
+                                msg = 'Requested page not found. [404]';
+                            } else if (jqXHR.status == 500) {
+                                msg = 'Internal Server Error [500].';
+                            } else if (exception === 'parsererror') {
+                                msg = 'Requested JSON parse failed.';
+                            } else if (exception === 'timeout') {
+                                msg = 'Time out error.';
+                            } else if (exception === 'abort') {
+                                msg = 'Ajax request aborted.';
+                            } else {
+                                msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                            }
+                            alert(msg);
+                        },
+                        complete: function (jqXHR, status) {
+                        }
+                    });
+                }
+        </script>*@
 </body>
+
 </html>
