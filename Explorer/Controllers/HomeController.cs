@@ -32,55 +32,25 @@ namespace Explorer.Controllers
         public async Task<IActionResult> Index(string folderName)
         {
             FoldersModel folder = new FoldersModel() { Name = folderName };
-            context.Folders.Add(folder);
+            await context.Folders.AddAsync(folder);
             await context.SaveChangesAsync();
-            return View();
+            return this.View();
         }
         //------------------------//
         [HttpPost]
-        public async Task<IActionResult> AddFileFromDB([FromForm]IFormFile file)
+        public async Task<IActionResult> AddFileFromDB([FromForm]FilesViewModel Contents)
         {
-            if(file != null)
+            byte[] Data = null;
+            if (Contents.Content != null)
             {
+                using (var binaryReader = new BinaryReader(Contents.Content.OpenReadStream()))
+                {
+                    Data = binaryReader.ReadBytes((int)Contents.Content.Length);
+                }
             }
-            //foreach (IFormFile source in file)
-            //{
-            //    string filename = ContentDispositionHeaderValue.Parse(source.ContentDisposition).FileName.Trim('"');
 
-            //    filename = this.EnsureCorrectFilename(filename);
-
-            //    using (FileStream output = System.IO.File.Create(this.GetPathAndFilename(filename)))
-            //        await source.CopyToAsync(output);
-            //}
-
-            return this.View();
+            return View("Index");
         }
-
-        private string EnsureCorrectFilename(string filename)
-        {
-            if (filename.Contains("\\"))
-                filename = filename.Substring(filename.LastIndexOf("\\") + 1);
-
-            return filename;
-        }
-
-        private string GetPathAndFilename(string filename)
-        {
-            return hostEnvironment.WebRootPath + "\\uploads\\" + filename;
-        }
-        //------------------------//
-        //[HttpPost]
-        //public async Task<IActionResult> Index(FilesModel file)
-        //{
-        //    //FoldersModel folder = new FoldersModel() { Name = folderName };
-        //    //context.Folders.Add(folder);
-        //    //await context.SaveChangesAsync();
-        //    return View();
-        //}
-        //public async Task<IActionResult> Index()
-        //{
-        //    return View(await context.Folders.ToListAsync());
-        //}
 
         public IActionResult Index()
         {
@@ -94,11 +64,6 @@ namespace Explorer.Controllers
         public IActionResult Explorer()
         {
             return View();
-        }
-        [HttpPost]
-        public IActionResult Add()
-        {
-            return Ok("fdsfsd");
         }
     }
 }

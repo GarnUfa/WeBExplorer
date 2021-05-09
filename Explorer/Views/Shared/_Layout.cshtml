@@ -21,6 +21,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container input-group">
                 @await Html.PartialAsync("_CreateFolders")
+                @await Html.PartialAsync("_LoadFile")
                 <label class="btn btn-sm" id="loadFile44">Удалить папку</label>
                 <label for="loadFile" class="btn btn-sm" value="Загрузить файл">Загрузить файл</label>
                 <form id="form" name="form" asp-controller="Home" asp-action="AddFileFromDB" enctype="multipart/form-data" method="post" hidden="hidden">
@@ -50,7 +51,7 @@
 
             for (var i = 0; i != files.length; i++) {
                 alert(i);
-                formData.append("file", files[i]);
+                formData.append("loadFile", files[i]);
             }
 
             $.ajax(
@@ -86,13 +87,13 @@
             );
         }
     </script>
-    <form id="form" name="form" asp-controller="Home" asp-action="AddFileFromDB" enctype="multipart/form-data" method="post">
-
-        <input type="file" name="file">
-        <input type="submit" name="file" value="load">
-
+    <form id="form" name="form" asp-controller="Home" asp-action="AddFileFromDB" enctype="multipart/form-data" method="post" >
+        
+            <input type="file" name="file"   >
+            <input type="submit" name="file" value="load"   >
+      
     </form>
-    @*<script>
+     <script>
                function uploadFiles(inputId) {
                     var formData = new FormData();
                     formData.append('file', $('#loadFile')[0].files[0]); // myFile is the input type="file" control
@@ -130,7 +131,7 @@
                         }
                     });
                 }
-        </script>*@
+        </script>
 </body>
 
 </html>

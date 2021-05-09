@@ -1,0 +1,29 @@
+﻿@model IEnumerable<FilesModel>
+<a class="btn btn-sm" data-toggle="modal" data-target="#LoadFileForm">Загрузить файл</a>
+
+<div class="modal fade bd-example-modal-lg" id="LoadFileForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form" name="form" asp-controller="Home" asp-action="_LoadFile" enctype="multipart/form-data" method="post">
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Название файла</label>
+                        <input name="Name" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Введите название файла">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Описание файла</label>
+                        <textarea name="Description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                    <input type="file" name="Content" class="form-control-file m-1">
+                    <button type="submit" class="btn-sm btn-primary m-1" name="file">Загрузить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

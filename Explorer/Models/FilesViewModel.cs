@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,6 +15,6 @@ namespace Explorer.Models
         public int? FoldersModelID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public byte[] Content { get; set; }
+        public IFormFile Content { get; set; }
     }
 }
