@@ -29,6 +29,7 @@ namespace Explorer
             services.AddDbContext<ExplorerContext>(options =>
                 options.UseNpgsql(connection));
             services.AddControllersWithViews();
+            services.AddKendo();
 
         }
 

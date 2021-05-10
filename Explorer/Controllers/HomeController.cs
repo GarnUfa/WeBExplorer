@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Kendo.Mvc;
 
 
 namespace Explorer.Controllers
@@ -31,15 +32,16 @@ namespace Explorer.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string folderName)
         {
+            
             FoldersModel folder = new FoldersModel() { Name = folderName };
             await context.Folders.AddAsync(folder);
             await context.SaveChangesAsync();
             return this.View();
         }
-        //------------------------//
         [HttpPost]
         public async Task<IActionResult> AddFileFromDB([FromForm]FilesViewModel Contents)
         {
+            FilesModel file = new FilesModel();
             byte[] Data = null;
             if (Contents.Content != null)
             {
@@ -47,8 +49,12 @@ namespace Explorer.Controllers
                 {
                     Data = binaryReader.ReadBytes((int)Contents.Content.Length);
                 }
+                file.Description = Contents.Description;
+                file.Name = Contents.Name;
+                file.Content = Data;
             }
-
+            await context.Files.AddAsync(file);
+            await context.SaveChangesAsync();
             return View("Index");
         }
 
@@ -62,6 +68,10 @@ namespace Explorer.Controllers
             return View();
         }
         public IActionResult Explorer()
+        {
+            return View();
+        }
+        public IActionResult testing()
         {
             return View();
         }

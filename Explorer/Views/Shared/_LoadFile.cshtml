@@ -11,7 +11,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form" name="form" asp-controller="Home" asp-action="_LoadFile" enctype="multipart/form-data" method="post">
+                <form id="form" name="form" asp-controller="Home" asp-action="AddFileFromDB" enctype="multipart/form-data" method="post">
                     <div class="form-group">
                         <label for="exampleFormControlInput1">Название файла</label>
                         <input name="Name" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Введите название файла">
@@ -21,7 +21,7 @@
                         <textarea name="Description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                     </div>
                     <input type="file" name="Content" class="form-control-file m-1">
-                    <button type="submit" class="btn-sm btn-primary m-1" name="file">Загрузить</button>
+                    <button type="submit" class="btn-sm btn-primary m-1" name="file" onclick="">Загрузить</button>
                 </form>
             </div>
         </div>

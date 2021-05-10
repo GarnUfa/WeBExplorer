@@ -18,10 +18,11 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.5.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
     <PackageReference Include="Telerik.UI.for.AspNet.Core.Trial" Version="2021.1.330" />
+    <PackageReference Include="Telerik.Windows.Documents.Core.Trial" Version="2021.1.322" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <Folder Include="Services\Linker\" />
   </ItemGroup>
 
 </Project>
