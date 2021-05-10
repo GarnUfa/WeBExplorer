@@ -21,8 +21,4 @@
     <PackageReference Include="Telerik.Windows.Documents.Core.Trial" Version="2021.1.322" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\Linker\" />
-  </ItemGroup>
-
 </Project>
