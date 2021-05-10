@@ -14,10 +14,12 @@ using System.Threading.Tasks;
 using Kendo.Mvc;
 
 
+
 namespace Explorer.Controllers
 {
     public class HomeController : Controller
     {
+        
         private readonly ILogger<HomeController> _logger;
         private ExplorerContext context;
         private IWebHostEnvironment hostEnvironment;
@@ -27,7 +29,9 @@ namespace Explorer.Controllers
             this.context = context;
             this.hostEnvironment = hostEnvironment;
             _logger = logger;
+            ViewExplorerModel viewExplorer = new ViewExplorerModel(context);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Index(string folderName)

@@ -1,16 +1,5 @@
-﻿<script>
+﻿@model ViewExplorerModel
 
-    $('#loadFileq').click(function () {
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("Add")",
-            //data: { 'test': 'hui' },
-            success: function () {
-                alert("@Url.Action("Add")")
-            }
-        });
-    });
-</script>
 <div class="col-md-12">
     <h1>Kendo</h1>
     <div class="col-md-12">
@@ -18,14 +7,6 @@
     </div>
     <input id="cmbEmploee" />
 </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#kendoVersion").text(kendo.version);
-        $("#cmbEmploee").kendoComboBox({
-
-        });
-    });
-</script>
 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
     <ul class="navbar-nav flex-grow-1">
         <li class="nav-item">
