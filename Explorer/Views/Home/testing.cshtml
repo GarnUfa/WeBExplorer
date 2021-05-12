@@ -1,5 +1,4 @@
-﻿@model ViewExplorerModel
-
+﻿@model IEnumerable<TreeViewItemFactory>
 <div class="demo-section k-content">
     @(Html.Kendo().TreeView()
         .Name("treeview")
@@ -10,6 +9,7 @@
                 .Expanded(true)
                 .Items(root =>
                 {
+                    
                     root.Add().Text("images")
                         .Expanded(true)
                         .SpriteCssClasses("folder")
@@ -64,7 +64,7 @@
 
 <style>
     #treeview .k-sprite {
-        background-image: url("@Url.Content("~/shared/web/treeview/coloricons-sprite.png")");
+        background-image: url("@Url.Content("https://demos.telerik.com/aspnet-core/shared/web/treeview/coloricons-sprite.png")");
     }
 
     .rootfolder { background-position: 0 0; }

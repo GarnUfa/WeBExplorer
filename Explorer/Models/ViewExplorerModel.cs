@@ -1,40 +1,66 @@
 ﻿using Explorer.Services.Linker;
 using System.Collections.Generic;
 using System.Linq;
+using Kendo.Mvc.UI;
+using Kendo.Mvc.UI.Fluent;
+using System;
 
 namespace Explorer.Models
 {
+    //Можно было создать сервис но пока создал так дабы не усложнять
     public class ViewExplorerModel
     {
-        public List<Component> components = new List<Component>();
+        public static Action<TreeViewItemFactory> action12;
+        public static List<Component> AllComponents = new List<Component>();
+        public static List<Component> GroupedComponents = new List<Component>();
         ExplorerContext context { get; set; }
-        public ViewExplorerModel(ExplorerContext context)
+        public ViewExplorerModel( ref ExplorerContext context)
         {
             this.context = context;
+            AddAllComponentsFromDB(ref context);
+            AddGroupedComponents();
         }
+        //private Component Grouper(Component item)
+        //{
 
-        private void qwer(ExplorerContext ec)
+        //}
+        private void AddGroupedComponents()
         {
-            foreach (var folder in ec.Folders)
+            foreach (var folder in AllComponents)
             {
-                DirectoryExplorer component = new DirectoryExplorer(folder.Name, folder.ID);
-                components.Add(component);
-            }
-            foreach (var file in ec.Files)
-            {
-                int fileID = file.ID;
-                string fileName = file.Name;
-                int? parentID = file.FoldersModelID;
-                if (parentID != null)
+                if (!(folder is DirectoryExplorer)&& folder.parentID==null)
                 {
-                    var fold = components.Where(t => t.ID == parentID && t is DirectoryExplorer).ToList()[0];
-                    fold.Add(new FileExplorer(fileName, fileID));
+                    GroupedComponents.Add(folder);
+                    continue;
                 }
-                else
+                var child = AllComponents.Where(child => child.parentID == folder.ID);
+                foreach(var cmp in child)
                 {
-                    components.Add(new FileExplorer(fileName, fileID));
+                    folder.Add(cmp);
+                }
+                GroupedComponents.Add(folder);
+            }
+            for(int i=0; i< GroupedComponents.Count; i++)
+            {
+                var g = GroupedComponents[i];
+                if (g.parentID != null)
+                {
+                    GroupedComponents.RemoveAt(i);
+                    --i;
                 }
             }
         }
+        private void AddAllComponentsFromDB(ref ExplorerContext context)
+        {
+            foreach (var folder in context.Folders)
+                AllComponents.Add(new DirectoryExplorer(folder.Name, folder.ID, folder.ParentID));
+            foreach(var file in context.Files)
+                AllComponents.Add(new FileExplorer(file.Name, file.ID, file.FoldersModelID));
+        }
+        public IEnumerable<TreeViewItemFactory> TreeViewRoot (TreeViewItemFactory treeViewItemFactory)
+        {
+            yield return treeViewItemFactory;
+        }
+  
     }
 }

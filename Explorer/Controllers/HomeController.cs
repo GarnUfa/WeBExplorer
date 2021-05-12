@@ -29,7 +29,7 @@ namespace Explorer.Controllers
             this.context = context;
             this.hostEnvironment = hostEnvironment;
             _logger = logger;
-            ViewExplorerModel viewExplorer = new ViewExplorerModel(context);
+            ViewExplorerModel viewExplorer = new ViewExplorerModel(ref context);
         }
 
 

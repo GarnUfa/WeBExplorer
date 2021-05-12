@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kendo.Mvc.UI.Fluent;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,12 +8,11 @@ namespace Explorer.Services.Linker
 {
     public class DirectoryExplorer : Component
     {
-        private List<Component> components = new List<Component>();
-        public DirectoryExplorer(string name, int ID) : base(name, ID)
+        public List<Component> components = new List<Component>();
+        public DirectoryExplorer(string name, int ID, int? parentID) : base(name, ID, parentID)
         {
 
         }
-
         public override void Add(Component component)
         {
             components.Add(component);
@@ -26,6 +26,12 @@ namespace Explorer.Services.Linker
         public override void Rename(string newName)
         {
             this.name = newName;
+        }
+
+        public override TreeViewItemFactory View(TreeViewItemFactory item)
+        {
+            item.Add().Text(this.name).SpriteCssClasses("folder");
+            return item;
         }
     }
 }
