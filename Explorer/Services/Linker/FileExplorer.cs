@@ -22,7 +22,7 @@ namespace Explorer.Services.Linker
 
         public override TreeViewItemModel View()
         {
-            TreeViewItemModel model = new TreeViewItemModel();
+            return this.viewItem;
         }
     }
 }

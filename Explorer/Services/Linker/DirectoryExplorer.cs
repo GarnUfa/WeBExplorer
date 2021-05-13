@@ -11,9 +11,9 @@ namespace Explorer.Services.Linker
     {
         public List<Component> components = new List<Component>();
         
-        public DirectoryExplorer(string name, int ID, int? parentID, bool isHaveChild = false) : base(name, ID, parentID, isHaveChild)
+        public DirectoryExplorer(string name, int ID, int? parentID, bool HasChildren = false) : base(name, ID, parentID, HasChildren)
         {
-            this.isHaveChild = isHaveChild;
+            this.HasChildren = HasChildren;
         }
         public override void Add(Component component)
         {
@@ -31,12 +31,12 @@ namespace Explorer.Services.Linker
         }
         public override void SetIsHaveChild(bool isHave)
         {
-            isHaveChild = isHave;
+            HasChildren = isHave;
         }
 
         public override TreeViewItemModel View()
         {
-            
+            return this.viewItem;
         }
     }
 }
