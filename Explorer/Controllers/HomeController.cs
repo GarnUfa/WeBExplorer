@@ -29,7 +29,7 @@ namespace Explorer.Controllers
             this.context = context;
             this.hostEnvironment = hostEnvironment;
             _logger = logger;
-            ViewExplorerModel viewExplorer = new ViewExplorerModel(ref context);
+            
         }
 
 
@@ -77,6 +77,7 @@ namespace Explorer.Controllers
         }
         public IActionResult testing()
         {
+            ViewExplorerModel viewExplorer = new ViewExplorerModel(ref context);
             return View();
         }
     }
