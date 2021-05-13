@@ -7,12 +7,12 @@ using Kendo.Mvc.UI;
 
 namespace Explorer.Services.Linker
 {
-    public abstract class Component 
+    public abstract class Component : TreeViewItemModel
     {
         public string name;
         public int ID;
         public int? parentID;
-        public bool HasChildren;
+        public bool HasChild;
         public TreeViewItemModel viewItem;
         public abstract TreeViewItemModel View();
 
@@ -27,7 +27,7 @@ namespace Explorer.Services.Linker
             this.name = name;
             this.ID = ID;
             this.parentID = parentID;
-            this.HasChildren = HasChildren;
+            this.HasChild = HasChildren;
         }
 
         public virtual void Add(Component component) { }

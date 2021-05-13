@@ -13,7 +13,7 @@ namespace Explorer.Services.Linker
         
         public DirectoryExplorer(string name, int ID, int? parentID, bool HasChildren = false) : base(name, ID, parentID, HasChildren)
         {
-            this.HasChildren = HasChildren;
+            this.HasChild = HasChildren;
         }
         public override void Add(Component component)
         {
@@ -31,7 +31,7 @@ namespace Explorer.Services.Linker
         }
         public override void SetIsHaveChild(bool isHave)
         {
-            HasChildren = isHave;
+            HasChild = isHave;
         }
 
         public override TreeViewItemModel View()

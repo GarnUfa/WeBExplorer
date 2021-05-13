@@ -20,10 +20,6 @@ namespace Explorer.Models
             AddAllComponentsFromDB(ref context);
             AddGroupedComponents();
         }
-        //private Component Grouper(Component item)
-        //{
-
-        //}
         private void AddGroupedComponents()
         {
             foreach (var folder in AllComponents)
@@ -37,6 +33,7 @@ namespace Explorer.Models
                 foreach(var child in childs)
                 {
                     folder.Add(child);
+                    folder.Items.Add(child.viewItem);
                     folder.SetIsHaveChild(true);
                 }
                 GroupedComponents.Add(folder);
@@ -58,9 +55,9 @@ namespace Explorer.Models
             foreach(var file in context.Files)
                 AllComponents.Add(new FileExplorer(file.Name, file.ID, file.FoldersModelID));
         }
-        public IEnumerable<TreeViewItemFactory> TreeViewRoot (TreeViewItemFactory treeViewItemFactory)
+        public IEnumerable<TreeViewItemModel> TreeViewRoot (TreeViewItemModel model)
         {
-            yield return treeViewItemFactory;
+            yield return model;
         }
   
     }

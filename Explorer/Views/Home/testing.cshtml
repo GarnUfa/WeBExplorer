@@ -1,11 +1,8 @@
-﻿@model IEnumerable<TreeViewItemFactory>
-<div class="demo-section k-content">
+﻿<div class="demo-section k-content">
     @(Html.Kendo().TreeView()
         .Name("treeview")
         .DataTextField("Name")
-        .DataSource(dataSource => dataSource
-        .Read(r => r.Action("testing", "Home"))
-    )
+        .BindTo(ViewExplorerModel.GroupedComponents)
     )
 </div>
 
