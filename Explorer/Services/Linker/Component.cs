@@ -18,7 +18,7 @@ namespace Explorer.Services.Linker
 
         public Component(string name, int ID, int? parentID, bool HasChildren = false)
         {
-            viewItem = new TreeViewItemModel()
+            this.viewItem = new TreeViewItemModel()
             {
                 Id = ID.ToString(),
                 Text = name,
