@@ -1,4 +1,5 @@
-﻿using Kendo.Mvc.UI.Fluent;
+﻿using Kendo.Mvc.UI;
+using Kendo.Mvc.UI.Fluent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,9 @@ namespace Explorer.Services.Linker
             this.name = newName;
         }
 
-        public override TreeViewItemFactory View(TreeViewItemFactory item)
+        public override TreeViewItemModel View()
         {
-            item.Add().Text(this.name);
-            return item;
+            TreeViewItemModel model = new TreeViewItemModel();
         }
     }
 }

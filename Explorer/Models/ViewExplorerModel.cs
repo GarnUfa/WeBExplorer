@@ -33,10 +33,11 @@ namespace Explorer.Models
                     GroupedComponents.Add(folder);
                     continue;
                 }
-                var child = AllComponents.Where(child => child.parentID == folder.ID);
-                foreach(var cmp in child)
+                var childs = AllComponents.Where(child => child.parentID == folder.ID);
+                foreach(var child in childs)
                 {
-                    folder.Add(cmp);
+                    folder.Add(child);
+                    folder.SetIsHaveChild(true);
                 }
                 GroupedComponents.Add(folder);
             }

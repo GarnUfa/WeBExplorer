@@ -77,8 +77,11 @@ namespace Explorer.Controllers
         }
         public IActionResult testing()
         {
-            ViewExplorerModel viewExplorer = new ViewExplorerModel(ref context);
             return View();
+        }
+        public JsonResult testing2()
+        {
+            return new JsonResult(context);
         }
     }
 }
