@@ -13,6 +13,7 @@ namespace Explorer.Models
         public static Action<TreeViewItemFactory> action12;
         public static List<Component> AllComponents = new List<Component>();
         public static List<Component> GroupedComponents = new List<Component>();
+       
         ExplorerContext context { get; set; }
         public ViewExplorerModel( ref ExplorerContext context)
         {
@@ -29,16 +30,15 @@ namespace Explorer.Models
                     GroupedComponents.Add(folder);
                     continue;
                 }
-                var childs = AllComponents.Where(child => child.parentID == folder.ID);
+                var childs = AllComponents.Where(child => child.parentID == int.Parse(folder.Id));
                 foreach(var child in childs)
                 {
                     folder.Add(child);
-                    folder.Items.Add(child.viewItem);
                     folder.SetIsHaveChild(true);
                 }
                 GroupedComponents.Add(folder);
             }
-            for(int i=0; i< GroupedComponents.Count; i++)
+            for (int i = 0; i < GroupedComponents.Count; i++)
             {
                 var g = GroupedComponents[i];
                 if (g.parentID != null)
@@ -54,10 +54,6 @@ namespace Explorer.Models
                 AllComponents.Add(new DirectoryExplorer(folder.Name, folder.ID, folder.ParentID));
             foreach(var file in context.Files)
                 AllComponents.Add(new FileExplorer(file.Name, file.ID, file.FoldersModelID));
-        }
-        public IEnumerable<TreeViewItemModel> TreeViewRoot (TreeViewItemModel model)
-        {
-            yield return model;
         }
   
     }

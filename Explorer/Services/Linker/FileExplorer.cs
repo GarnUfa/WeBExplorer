@@ -17,13 +17,9 @@ namespace Explorer.Services.Linker
 
         public override void Rename(string newName)
         {
-            this.name = newName;
+            this.Text = newName;
         }
 
-        public override TreeViewItemModel View()
-        {
-            return this.viewItem;
-        }
     }
 }
 

@@ -10,14 +10,14 @@ namespace Explorer.Services.Linker
     public class DirectoryExplorer : Component
     {
         public List<Component> components = new List<Component>();
-        
         public DirectoryExplorer(string name, int ID, int? parentID, bool HasChildren = false) : base(name, ID, parentID, HasChildren)
         {
-            this.HasChild = HasChildren;
+            this.HasChildren = HasChildren;
         }
         public override void Add(Component component)
         {
             components.Add(component);
+            this.Items.Add(component);
         }
 
         public override void Remove(Component component)
@@ -27,16 +27,12 @@ namespace Explorer.Services.Linker
 
         public override void Rename(string newName)
         {
-            this.name = newName;
+            this.Text = newName;
         }
         public override void SetIsHaveChild(bool isHave)
         {
-            HasChild = isHave;
+            HasChildren = isHave;
         }
 
-        public override TreeViewItemModel View()
-        {
-            return this.viewItem;
-        }
     }
 }
