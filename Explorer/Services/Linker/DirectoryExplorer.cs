@@ -9,15 +9,22 @@ namespace Explorer.Services.Linker
 {
     public class DirectoryExplorer : Component
     {
-        public List<Component> components = new List<Component>();
+        private List<Component> components = new List<Component>();
         public DirectoryExplorer(string name, int ID, int? parentID, bool HasChildren = false) : base(name, ID, parentID, HasChildren)
         {
             this.HasChildren = HasChildren;
         }
         public override void Add(Component component)
         {
-            components.Add(component);
-            this.Items.Add(component);
+            if (!components.Contains(component))
+            {
+                components.Add(component);
+                this.Items.Add(component);
+            }
+        }
+        public List<Component> GiveComponentsFromDir()
+        {
+            return components;
         }
 
         public override void Remove(Component component)

@@ -19,6 +19,7 @@ namespace Explorer
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -30,7 +31,7 @@ namespace Explorer
                 options.UseNpgsql(connection));
             services.AddControllersWithViews();
             services.AddKendo();
-
+            services.AddSingleton<IViewExplorerModel, ViewExplorerModel>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

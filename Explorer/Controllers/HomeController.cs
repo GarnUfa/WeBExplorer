@@ -23,13 +23,15 @@ namespace Explorer.Controllers
         private readonly ILogger<HomeController> _logger;
         private ExplorerContext context;
         private IWebHostEnvironment hostEnvironment;
+        private IViewExplorerModel viewExplorerModel;
 
-        public HomeController(ILogger<HomeController> logger, ExplorerContext context, IWebHostEnvironment hostEnvironment)
+        public HomeController(ILogger<HomeController> logger, ExplorerContext context, IWebHostEnvironment hostEnvironment, IViewExplorerModel viewExplorerModel)
         {
             this.context = context;
             this.hostEnvironment = hostEnvironment;
             _logger = logger;
-            
+            this.viewExplorerModel = viewExplorerModel;
+
         }
 
 
@@ -77,12 +79,9 @@ namespace Explorer.Controllers
         }
         public IActionResult testing()
         {
-            ViewExplorerModel viewExplorerModel = new ViewExplorerModel(ref context);
+            viewExplorerModel.AddAllComponentsFromDB(ref context);
+            viewExplorerModel.AddGroupedComponents();
             return View();
-        }
-        public JsonResult testing2()
-        {
-            return new JsonResult(context);
         }
     }
 }
