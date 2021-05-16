@@ -16,6 +16,7 @@ namespace Explorer.Services.Linker
             this.Id = ID.ToString();
             this.Text = name;
             this.HasChildren = HasChildren;
+            this.SpriteCssClass = "k-sprite";
         }
 
         public virtual void Add(Component component) { }
