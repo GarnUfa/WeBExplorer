@@ -94,12 +94,12 @@ namespace Explorer.Controllers
         
         public IActionResult testing()
         {
-            viewExplorerModel.AddAllComponentsFromDB(ref context);
+            viewExplorerModel.AddAllComponentsFromDB(context);
             viewExplorerModel.AddGroupedComponents();
             return View();
         }
         [HttpPost]
-        public IActionResult SelectedReturn(string i)
+        public IActionResult SelectedReturn(string i, string ar)
         {
             selectedID = i;
             return View();

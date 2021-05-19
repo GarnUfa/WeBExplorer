@@ -10,7 +10,7 @@ namespace Explorer.Models
     //Можно было создать сервис но пока создал так дабы не усложнять
     public class ViewExplorerModel : IViewExplorerModel
     {
-        public static List<Component> AllComponents = new List<Component>();
+        private static List<Component> AllComponents = new List<Component>();
         public static List<Component> GroupedComponents = new List<Component>();
 
         public ViewExplorerModel()
@@ -27,6 +27,8 @@ namespace Explorer.Models
                     var coincidenceList = GroupedComponents.Where(c => c.Id == folder.Id && c.GetType() == folder.GetType());
                     if (coincidenceList.Count() > 0)
                         continue;
+                    //можно вынести в отдельный метод вроде GroupedComponentsAdded, что бы вкладывать туда все, что нужно сделать\добавить перед основным add  
+                    folder.SetComponentExtension();
                     GroupedComponents.Add(folder);
                     continue;
                 }
@@ -39,12 +41,15 @@ namespace Explorer.Models
                     var coincidenceList2 = fold.GiveComponentsFromDir().Where(c => c.Id == folder.Id && c.GetType() == folder.GetType());
                     if (coincidenceList2.Count() > 0)
                         continue;
+                    //можно вынести в отдельный метод вроде GroupedComponentsAdded, что бы вкладывать туда все, что нужно сделать\добавить перед основным add  
+                    child.SetComponentExtension();
                     folder.Add(child);
                     folder.SetIsHaveChild(true);
                 }
                 var coincidenceList3 = GroupedComponents.Where(c => c.Id == folder.Id && c.GetType() == folder.GetType());
                 if (coincidenceList3.Count() > 0)
                     continue;
+                folder.SetComponentExtension();
                 GroupedComponents.Add(folder);
             }
             for (int i = 0; i < GroupedComponents.Count; i++)
@@ -59,52 +64,25 @@ namespace Explorer.Models
         }
         //Собирает в единый список все компоненты дерева (папки и файлы), не добавляя повторные компоненты
         //Можно переделать через два форича но я пока не стал
-        public void AddAllComponentsFromDB(ref ExplorerContext context)
+        public void AddAllComponentsFromDB(ExplorerContext context)
         {
-            FileExtensionsModel extensionsModel = new FileExtensionsModel();
+            List<FileExtensionsModel> FileExtensList = context.FileExtensions.ToList();
             if (AllComponents.Count==0)
             {
                 foreach (var folder in context.Folders)
                 {
-                    if (folder.ParentID is null)
-                    {
-                        //Эти цифры тоже не правильно, непонятно откуда что берется, опять же надо выносить в отдельный метод поиск расширения
-                        // 2 и 3 это ИД расширения в БД в зависимости от заполнености папки
-                        var fileExten = context.FileExtensions.Where(fe => fe.ID == 2).ToList()[0];
-                        extensionsModel = fileExten;
-                    }
-                    else
-                    {
-                        var fileExten = context.FileExtensions.Where(fe => fe.ID == 3).ToList()[0];
-                        extensionsModel = fileExten;
-                    }
-
-                    AllComponents.Add(new DirectoryExplorer(folder.Name, folder.ID, folder.ParentID, extensionsModel));
+                    AllComponents.Add(new DirectoryExplorer(folder.Name, folder.ID, folder.ParentID, FileExtensList));
                 }
                 foreach (var file in context.Files)
                 {
-                    extensionsModel = context.FileExtensions.Where(fe => fe.ID == file.FileExtensionsModelID).ToList()[0];
-                    AllComponents.Add(new FileExplorer(file.Name, file.ID, file.FoldersModelID, extensionsModel));
+                    AllComponents.Add(new FileExplorer(file.Name, file.ID, file.FoldersModelID, FileExtensList, file.FileExtensionsModelID));
                 }
             }
             else
             {
                 foreach (var folder in context.Folders)
                 {
-                    //Повторяющийся код - надо вынести в отдельный метод
-                    if (folder.ParentID is null)
-                    {
-                        //Эти цифры тоже не правильно, непонятно откуда что берется, опять же надо выносить в отдельный метод поиск расширения
-                        // 2 и 3 это ИД расширения в БД в зависимости от заполнености папки
-                        var fileExten = context.FileExtensions.Where(fe => fe.ID == 2).ToList()[0];
-                        extensionsModel = fileExten;
-                    }
-                    else
-                    {
-                        var fileExten = context.FileExtensions.Where(fe => fe.ID == 3).ToList()[0];
-                        extensionsModel = fileExten;
-                    }
-                    DirectoryExplorer de = new DirectoryExplorer(folder.Name, folder.ID, folder.ParentID, extensionsModel);
+                    DirectoryExplorer de = new DirectoryExplorer(folder.Name, folder.ID, folder.ParentID, FileExtensList);
                     var coincidenceList = AllComponents.Where(c => c.Id == de.Id);
                     if (coincidenceList.Count()>0)
                         continue;
@@ -113,8 +91,7 @@ namespace Explorer.Models
                 }
                 foreach (var file in context.Files)
                 {
-                    extensionsModel = context.FileExtensions.Where(fe => fe.ID == file.FileExtensionsModelID).ToList()[0];
-                    FileExplorer fe = new FileExplorer(file.Name, file.ID, file.FoldersModelID, extensionsModel);
+                    FileExplorer fe = new FileExplorer(file.Name, file.ID, file.FoldersModelID, FileExtensList, file.FileExtensionsModelID);
                     var coincidenceList = AllComponents.Where(c => c.Id == fe.Id);
                     if (coincidenceList.Count() > 0)
                         continue;
@@ -123,7 +100,5 @@ namespace Explorer.Models
                 }
             }
         }
-
-  
     }
 }

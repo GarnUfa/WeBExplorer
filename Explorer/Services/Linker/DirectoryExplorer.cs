@@ -11,15 +11,15 @@ namespace Explorer.Services.Linker
     public class DirectoryExplorer : Component
     {
         private List<Component> components = new List<Component>();
-        public DirectoryExplorer(string name, int ID, int? parentID, FileExtensionsModel extensionsModel, bool HasChildren = false) : base(name, ID, parentID,  extensionsModel, HasChildren)
+        FileExtensionsModel extensionsModel = new FileExtensionsModel();
+        public DirectoryExplorer(string name, int ID, int? parentID, List<FileExtensionsModel> FileExtensList, bool HasChildren = false) : base(name, ID, parentID, FileExtensList, HasChildren)
         {
             this.HasChildren = HasChildren;
-            this.SpriteCssClass = "folder-empty";
+            this.HtmlAttributes = new Dictionary<string, string> { ["id"] = "folder" };
         }
         public override void Add(Component component)
         {
             this.HasChildren = true;
-            this.SpriteCssClass = "folder-with-contents";
             if (!components.Contains(component))
             {
                 components.Add(component);
@@ -43,6 +43,20 @@ namespace Explorer.Services.Linker
         public override void SetIsHaveChild(bool isHave)
         {
             HasChildren = isHave;
+        }
+        public override void SetComponentExtension()
+        {
+            //Цифры 2 и 3 это ИД в БД
+            //Переделать было б не плохо так как стороннему наблюдателю непонятен их смысл, хотяб бы enum
+            if(components.Count()>0)
+            {
+                extensionsModel = this.FileExtensList.Where(fe => fe.ID == 3).ToList()[0];
+            }
+            else
+            {
+                extensionsModel = this.FileExtensList.Where(fe => fe.ID == 2).ToList()[0];
+            }
+            this.ImageUrl = "data:image/vnd.microsoft.icon;base64," + Convert.ToBase64String(extensionsModel.Icon);
         }
 
     }

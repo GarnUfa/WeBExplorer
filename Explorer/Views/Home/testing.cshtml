@@ -8,14 +8,14 @@
 <script>
     function onTreeViewselectNode(e) {
         var dataItem = e.sender.dataItem(e.node);
-        var nodetext = e.sender.text(e.node);
-        var i = "qwer";
+        var htmlatr = e.node.attributes["id"].value
         console.log(dataItem);
-        var jsonData = JSON.stringify("ddd");
+        console.log(htmlatr);
         $.ajax({
             type: 'POST',
             url: '/Home/SelectedReturn/',
-            data: { i: dataItem.spriteCssClass},
+            traditional: true,
+            data: { i: dataItem.id, ar: htmlatr},
             datatype: "text",
             //success: function () {
             //    alert("Данные отправлены, Спасибо, ");
@@ -27,8 +27,9 @@
     }
 </script>
 <style>
-    .k-sprite {
-        background-image: url("@Url.Content("https://demos.telerik.com/aspnet-core/shared/web/treeview/coloricons-sprite.png")");
+    .k-image {
+        width: 48px;
+        height: 48px;
     }
 
     .rootfolder { background-position: 0 0; }
