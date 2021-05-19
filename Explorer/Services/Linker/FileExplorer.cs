@@ -1,4 +1,5 @@
-﻿using Kendo.Mvc.UI;
+﻿using Explorer.Models;
+using Kendo.Mvc.UI;
 using Kendo.Mvc.UI.Fluent;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,9 @@ namespace Explorer.Services.Linker
 {
     public class FileExplorer : Component
     {
-        public FileExplorer(string name, int ID, int? parentID) : base(name, ID, parentID)
+        public FileExplorer(string name, int ID, int? parentID, FileExtensionsModel extensionsModel) : base(name, ID, parentID, extensionsModel)
         {
-
+            this.SpriteCssClass = "file";
         }
 
 

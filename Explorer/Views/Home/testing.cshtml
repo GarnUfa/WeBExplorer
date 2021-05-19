@@ -1,11 +1,31 @@
-﻿
-<div class="demo-section k-content">
+﻿<div class="demo-section k-content">
     @(Html.Kendo().TreeView()
         .Name("treeview-left")
         .BindTo(ViewExplorerModel.GroupedComponents)
+        .Events(ev=>ev.Select("onTreeViewselectNode"))
     )
 </div>
-
+<script>
+    function onTreeViewselectNode(e) {
+        var dataItem = e.sender.dataItem(e.node);
+        var nodetext = e.sender.text(e.node);
+        var i = "qwer";
+        console.log(dataItem);
+        var jsonData = JSON.stringify("ddd");
+        $.ajax({
+            type: 'POST',
+            url: '/Home/SelectedReturn/',
+            data: { i: dataItem.spriteCssClass},
+            datatype: "text",
+            //success: function () {
+            //    alert("Данные отправлены, Спасибо, ");
+            //},
+            //error: function () {
+            //    alert("Не отправлены " );
+            //},
+        });
+    }
+</script>
 <style>
     .k-sprite {
         background-image: url("@Url.Content("https://demos.telerik.com/aspnet-core/shared/web/treeview/coloricons-sprite.png")");

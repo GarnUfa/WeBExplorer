@@ -1,4 +1,5 @@
-﻿using Kendo.Mvc.UI;
+﻿using Explorer.Models;
+using Kendo.Mvc.UI;
 using Kendo.Mvc.UI.Fluent;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,15 @@ namespace Explorer.Services.Linker
     public class DirectoryExplorer : Component
     {
         private List<Component> components = new List<Component>();
-        public DirectoryExplorer(string name, int ID, int? parentID, bool HasChildren = false) : base(name, ID, parentID, HasChildren)
+        public DirectoryExplorer(string name, int ID, int? parentID, FileExtensionsModel extensionsModel, bool HasChildren = false) : base(name, ID, parentID,  extensionsModel, HasChildren)
         {
             this.HasChildren = HasChildren;
+            this.SpriteCssClass = "folder-empty";
         }
         public override void Add(Component component)
         {
+            this.HasChildren = true;
+            this.SpriteCssClass = "folder-with-contents";
             if (!components.Contains(component))
             {
                 components.Add(component);

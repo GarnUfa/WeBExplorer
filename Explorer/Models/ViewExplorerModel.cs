@@ -30,6 +30,8 @@ namespace Explorer.Models
                     GroupedComponents.Add(folder);
                     continue;
                 }
+                if (folder is FileExplorer)
+                    continue;
                 var childs = AllComponents.Where(child => child.parentID == int.Parse(folder.Id));
                 foreach(var child in childs)
                 {
@@ -55,20 +57,54 @@ namespace Explorer.Models
                 }
             }
         }
+        //Собирает в единый список все компоненты дерева (папки и файлы), не добавляя повторные компоненты
+        //Можно переделать через два форича но я пока не стал
         public void AddAllComponentsFromDB(ref ExplorerContext context)
         {
+            FileExtensionsModel extensionsModel = new FileExtensionsModel();
             if (AllComponents.Count==0)
             {
                 foreach (var folder in context.Folders)
-                    AllComponents.Add(new DirectoryExplorer(folder.Name, folder.ID, folder.ParentID));
+                {
+                    if (folder.ParentID is null)
+                    {
+                        //Эти цифры тоже не правильно, непонятно откуда что берется, опять же надо выносить в отдельный метод поиск расширения
+                        // 2 и 3 это ИД расширения в БД в зависимости от заполнености папки
+                        var fileExten = context.FileExtensions.Where(fe => fe.ID == 2).ToList()[0];
+                        extensionsModel = fileExten;
+                    }
+                    else
+                    {
+                        var fileExten = context.FileExtensions.Where(fe => fe.ID == 3).ToList()[0];
+                        extensionsModel = fileExten;
+                    }
+
+                    AllComponents.Add(new DirectoryExplorer(folder.Name, folder.ID, folder.ParentID, extensionsModel));
+                }
                 foreach (var file in context.Files)
-                    AllComponents.Add(new FileExplorer(file.Name, file.ID, file.FoldersModelID));
+                {
+                    extensionsModel = context.FileExtensions.Where(fe => fe.ID == file.FileExtensionsModelID).ToList()[0];
+                    AllComponents.Add(new FileExplorer(file.Name, file.ID, file.FoldersModelID, extensionsModel));
+                }
             }
             else
             {
                 foreach (var folder in context.Folders)
                 {
-                    DirectoryExplorer de = new DirectoryExplorer(folder.Name, folder.ID, folder.ParentID);
+                    //Повторяющийся код - надо вынести в отдельный метод
+                    if (folder.ParentID is null)
+                    {
+                        //Эти цифры тоже не правильно, непонятно откуда что берется, опять же надо выносить в отдельный метод поиск расширения
+                        // 2 и 3 это ИД расширения в БД в зависимости от заполнености папки
+                        var fileExten = context.FileExtensions.Where(fe => fe.ID == 2).ToList()[0];
+                        extensionsModel = fileExten;
+                    }
+                    else
+                    {
+                        var fileExten = context.FileExtensions.Where(fe => fe.ID == 3).ToList()[0];
+                        extensionsModel = fileExten;
+                    }
+                    DirectoryExplorer de = new DirectoryExplorer(folder.Name, folder.ID, folder.ParentID, extensionsModel);
                     var coincidenceList = AllComponents.Where(c => c.Id == de.Id);
                     if (coincidenceList.Count()>0)
                         continue;
@@ -77,7 +113,8 @@ namespace Explorer.Models
                 }
                 foreach (var file in context.Files)
                 {
-                    FileExplorer fe = new FileExplorer(file.Name, file.ID, file.FoldersModelID);
+                    extensionsModel = context.FileExtensions.Where(fe => fe.ID == file.FileExtensionsModelID).ToList()[0];
+                    FileExplorer fe = new FileExplorer(file.Name, file.ID, file.FoldersModelID, extensionsModel);
                     var coincidenceList = AllComponents.Where(c => c.Id == fe.Id);
                     if (coincidenceList.Count() > 0)
                         continue;

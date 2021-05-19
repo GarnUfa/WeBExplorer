@@ -4,19 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Kendo.Mvc.UI.Fluent;
 using Kendo.Mvc.UI;
+using Explorer.Models;
 
 namespace Explorer.Services.Linker
 {
     public abstract class Component : TreeViewItemModel
     {
         public int? parentID;
-        public Component(string name, int ID, int? parentID, bool HasChildren = false)
+        FileExtensionsModel extensionsModel;
+        public Component(string name, int ID, int? parentID, FileExtensionsModel extensionsModel, bool HasChildren = false)
         {
             this.parentID = parentID;
             this.Id = ID.ToString();
             this.Text = name;
             this.HasChildren = HasChildren;
-            this.SpriteCssClass = "k-sprite";
         }
 
         public virtual void Add(Component component) { }

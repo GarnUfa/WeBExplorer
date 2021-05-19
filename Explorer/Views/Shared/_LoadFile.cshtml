@@ -13,17 +13,24 @@
             <div class="modal-body">
                 <form id="form" name="form" asp-controller="Home" asp-action="AddFileFromDB" enctype="multipart/form-data" method="post">
                     <div class="form-group">
-                        <label for="exampleFormControlInput1">Название файла</label>
-                        <input name="Name" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Введите название файла">
+                        <label for="Name">Название файла</label>
+                        <input name="Name" type="text" class="form-control" id="Name" placeholder="Введите название файла">
                     </div>
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Описание файла</label>
                         <textarea name="Description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                     </div>
-                    <input type="file" name="Content" class="form-control-file m-1">
+                    <input type="file" name="Content" class="form-control-file m-1" id="Content">
                     <button type="submit" class="btn-sm btn-primary m-1" name="file" onclick="">Загрузить</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script>
+    $('#Content').on('change', function () {
+        var splittedFakePath = this.value.split('\\');
+        $('#Name').val(splittedFakePath[splittedFakePath.length - 1]);
+    });
+</script>
+

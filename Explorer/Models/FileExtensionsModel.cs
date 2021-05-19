@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Explorer.Models
 {
@@ -11,6 +12,6 @@ namespace Explorer.Models
         [Key]
         public int ID { get; set; }
         public string FileType { get; set; }
-        public string Icon { get; set; }
+        public byte[] Icon { get; set; }
     }
 }

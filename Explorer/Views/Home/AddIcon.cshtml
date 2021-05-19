@@ -1,0 +1,31 @@
+﻿
+            <div class="modal-body">
+                <form id="form" name="form" asp-controller="Home" asp-action="AddIcon" enctype="multipart/form-data" method="post">
+                    <div class="form-group">
+                        <label for="Name">Расширение иконки</label>
+                        <input name="ExtensionName" type="text" class="form-control" id="ExtensionName" placeholder="Введите название файла или загрузите образец">
+                    </div>
+                    <div class="form-group">
+                        <label for="Icon">Загрузите образец</label>
+                        <input type="file" name="Pattern" class="form-control-file m-1" id="Pattern">
+                    </div>
+                    <div class="form-group">
+                        <label for="file">Иконка</label>
+                        <input type="file" name="Icon" class="form-control-file m-1" id="Icon" placeholder="Иконка">
+                    </div>
+                    <button type="submit" class="btn-sm btn-primary m-1" name="file" onclick="">Загрузить</button>
+                </form>
+            </div>
+            <script>
+                var control = document.getElementById("Pattern");
+                control.addEventListener("change", function (event) {
+                    // When the control has changed, there are new files
+                    var files = control.files;
+                    for (var i = 0; i < files.length; i++) {
+                        console.log("Filename: " + files[i].name);
+                        console.log("Type: " + files[i].type);
+                        console.log("Size: " + files[i].size + " bytes");
+                        $('#ExtensionName').val(files[i].type);
+                    }
+                }, false);
+            </script>
