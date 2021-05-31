@@ -16,12 +16,14 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Kendo.Mvc.UI.Fluent;
 using System.Drawing;
 using Microsoft.AspNetCore.WebUtilities;
+using Explorer.Services.Linker;
 
 namespace Explorer.Controllers
 {
     public class HomeController : Controller
     {
         public static string selectedID;
+        public static string selectedArgId;
         private readonly ILogger<HomeController> _logger;
         private ExplorerContext context;
         private IWebHostEnvironment hostEnvironment;
@@ -38,13 +40,16 @@ namespace Explorer.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Index(string folderName)
+        public async Task<IActionResult> AddFolder(string folderName)
         {
             
-            FoldersModel folder = new FoldersModel() { Name = folderName };
+            FoldersModel folder = new FoldersModel() { Name = folderName, ParentID = int.Parse(selectedID) };
             await context.Folders.AddAsync(folder);
             await context.SaveChangesAsync();
-            return this.View();
+            //вынести в отдельный метод во вьюексплорермодель
+            viewExplorerModel.AddAllComponentsFromDB(context);
+            viewExplorerModel.AddGroupedComponents();
+            return View("WebExplorer");
         }
         [HttpPost]
         public async Task<IActionResult> AddFileFromDB([FromForm]FilesViewModel Contents)
@@ -61,6 +66,7 @@ namespace Explorer.Controllers
                 file.Description = Contents.Description;
                 file.Name = Contents.Name;
                 file.Content = Data;
+                file.FoldersModelID = int.Parse(selectedID);
                 //Определяем ID иконки 
                 var ExtensionFile = context.FileExtensions.Where(ext => ext.FileType == typeFile).ToList()[0];
                 if(ExtensionFile is null)
@@ -75,9 +81,35 @@ namespace Explorer.Controllers
             }
             await context.Files.AddAsync(file);
             await context.SaveChangesAsync();
-            return View("Index");
+            viewExplorerModel.AddAllComponentsFromDB(context);
+            viewExplorerModel.AddGroupedComponents();
+            return View("WebExplorer");
         }
-
+        [HttpPost]
+        public async Task<IActionResult> RemoveFile()
+        {
+            var AllComp = viewExplorerModel.AddAllComponentsFromDB(context);
+            List<Component> nodes = new List<Component>();
+            if(selectedArgId == "folder")
+            {
+                var x = context.Folders.Where(fold => fold.ID == int.Parse(selectedID)).ToList()[0];
+                context.Folders.Remove(x);
+                await context.SaveChangesAsync();
+                Component comp = AllComp.Where(c => c.Id == selectedID && c is DirectoryExplorer).ToList()[0];
+                nodes.Add(comp);
+                if (comp.parentID!=0)
+                {
+                    var compNodes = AllComp.Where(c => c.Id == comp.parentID.ToString());
+                    nodes.AddRange(compNodes);
+                }
+                //Удалить из БД всю ноду, удалить из Группы компонентов
+            }
+            if(selectedArgId =="file")
+            {
+                
+            }
+            return View();
+        }
         public IActionResult Index()
         {
             return View();
@@ -92,7 +124,7 @@ namespace Explorer.Controllers
             return View();
         }
         
-        public IActionResult testing()
+        public IActionResult WebExplorer()
         {
             viewExplorerModel.AddAllComponentsFromDB(context);
             viewExplorerModel.AddGroupedComponents();
@@ -102,6 +134,7 @@ namespace Explorer.Controllers
         public IActionResult SelectedReturn(string i, string ar)
         {
             selectedID = i;
+            selectedArgId = ar;
             return View();
         }
         [HttpPost]

@@ -64,11 +64,12 @@ namespace Explorer.Models
         }
         //Собирает в единый список все компоненты дерева (папки и файлы), не добавляя повторные компоненты
         //Можно переделать через два форича но я пока не стал
-        public void AddAllComponentsFromDB(ExplorerContext context)
+        public List<Component> AddAllComponentsFromDB(ExplorerContext context)
         {
             List<FileExtensionsModel> FileExtensList = context.FileExtensions.ToList();
             if (AllComponents.Count==0)
             {
+                AllComponents.Add(new DirectoryExplorer("Root", 0, null, FileExtensList));
                 foreach (var folder in context.Folders)
                 {
                     AllComponents.Add(new DirectoryExplorer(folder.Name, folder.ID, folder.ParentID, FileExtensList));
@@ -77,6 +78,7 @@ namespace Explorer.Models
                 {
                     AllComponents.Add(new FileExplorer(file.Name, file.ID, file.FoldersModelID, FileExtensList, file.FileExtensionsModelID));
                 }
+                return AllComponents;
             }
             else
             {
@@ -98,6 +100,7 @@ namespace Explorer.Models
                     else
                         AllComponents.Add(fe);
                 }
+                return AllComponents;
             }
         }
     }

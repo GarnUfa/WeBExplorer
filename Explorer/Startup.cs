@@ -44,7 +44,10 @@ namespace Explorer
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=WebExplorer}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "d",
+                    pattern: "{controller=Home}/{action}");
             });
         }
     }

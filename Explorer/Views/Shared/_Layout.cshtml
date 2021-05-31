@@ -4,23 +4,28 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Explorer</title>
-
     <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     @*<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>*@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
-
     @*<link href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.common.min.css" rel="stylesheet" />
-    <link href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.default.min.css" rel="stylesheet" />
-    <script src="https://kendo.cdn.telerik.com/2021.1.330/js/kendo.all.min.js"></script>*@
+        <link href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.default.min.css" rel="stylesheet" />
+        <script src="https://kendo.cdn.telerik.com/2021.1.330/js/kendo.all.min.js"></script>*@
 
     <script src="https://kendo.cdn.telerik.com/2021.1.330/js/jquery.min.js"></script>
     <script src="https://kendo.cdn.telerik.com/2021.1.330/js/kendo.all.min.js"></script>
     <script src="https://kendo.cdn.telerik.com/2021.1.330/js/kendo.aspnetmvc.min.js"></script>
     <link href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.bootstrap-v4.min.css" rel="stylesheet" type="text/css" />
+    <script>
+        function Delete() {
+            $.ajax({
+                url: "@Url.Action("RemoveFile", "Home")",
+                type: 'POST'
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -29,7 +34,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container input-group">
                 @await Html.PartialAsync("_CreateFolders")
-                <label class="btn btn-sm" id="loadFile44">Удалить папку</label>
+                <input type="button" class="btn btn-sm" name="Delete" onclick="Delete()" value="Удалить элемент">
                 @await Html.PartialAsync("_LoadFile")
                 <input class="btn btn-sm" id="loadFile2" value="Скачать файл">
                 <input class="btn btn-sm" id="loadFile3" value="Удалить файл">
@@ -44,96 +49,6 @@
     </div>
 
     @await RenderSectionAsync("Scripts", required: false)
-    @*<script>
-        function uploadFiles() {
-            alert("ds");
-            var input = document.getElementById("loadFile");
-            var files = input.files;
-            var formData = new FormData();
-
-            for (var i = 0; i != files.length; i++) {
-                alert(i);
-                formData.append("loadFile", files[i]);
-            }
-
-            $.ajax(
-                {
-                    url: "/Home/AddFileFromDB",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    type: "POST",
-                    success: function (data) {
-                        alert("Files Uploaded!");
-                    },
-                    error: function (jqXHR, exception) {
-                        var msg = '';
-                        if (jqXHR.status === 0) {
-                            msg = 'Not connect.\n Verify Network.';
-                        } else if (jqXHR.status == 404) {
-                            msg = 'Requested page not found. [404]';
-                        } else if (jqXHR.status == 500) {
-                            msg = 'Internal Server Error [500].';
-                        } else if (exception === 'parsererror') {
-                            msg = 'Requested JSON parse failed.';
-                        } else if (exception === 'timeout') {
-                            msg = 'Time out error.';
-                        } else if (exception === 'abort') {
-                            msg = 'Ajax request aborted.';
-                        } else {
-                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                        }
-                        alert(msg);
-                    }
-                }
-            );
-        }
-    </script>*@
-    @*<form id="form" name="form" asp-controller="Home" asp-action="AddFileFromDB" enctype="multipart/form-data" method="post" >
-        
-            <input type="file" name="file"   >
-            <input type="submit" name="file" value="load"   >
-      
-    </form>*@
-     @*<script>
-               function uploadFiles(inputId) {
-                    var formData = new FormData();
-                    formData.append('file', $('#loadFile')[0].files[0]); // myFile is the input type="file" control
-
-                    var _url = '/Home/AddFileFromDB';
-
-                    $.ajax({
-                        url: _url,
-                        type: 'POST',
-                        data: formData,
-                        processData: false,  // tell jQuery not to process the data
-                        contentType: false,  // tell jQuery not to set contentType
-                        success: function (result) {
-                        },
-                        error: function (jqXHR) {
-                            var msg = '';
-                            if (jqXHR.status === 0) {
-                                msg = 'Not connect.\n Verify Network.';
-                            } else if (jqXHR.status == 404) {
-                                msg = 'Requested page not found. [404]';
-                            } else if (jqXHR.status == 500) {
-                                msg = 'Internal Server Error [500].';
-                            } else if (exception === 'parsererror') {
-                                msg = 'Requested JSON parse failed.';
-                            } else if (exception === 'timeout') {
-                                msg = 'Time out error.';
-                            } else if (exception === 'abort') {
-                                msg = 'Ajax request aborted.';
-                            } else {
-                                msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                            }
-                            alert(msg);
-                        },
-                        complete: function (jqXHR, status) {
-                        }
-                    });
-                }
-        </script>*@
 </body>
 
 </html>

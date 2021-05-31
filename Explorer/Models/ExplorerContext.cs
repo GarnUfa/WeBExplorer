@@ -13,6 +13,7 @@ namespace Explorer.Models
         public DbSet<FileExtensionsModel> FileExtensions { get; set; }
         public ExplorerContext(DbContextOptions<ExplorerContext> options) : base(options)
         {
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

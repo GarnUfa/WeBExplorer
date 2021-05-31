@@ -46,16 +46,19 @@ namespace Explorer.Services.Linker
         }
         public override void SetComponentExtension()
         {
+            if (this.FileExtensList.Count==0)
+                return;
             //Цифры 2 и 3 это ИД в БД
             //Переделать было б не плохо так как стороннему наблюдателю непонятен их смысл, хотяб бы enum
-            if(components.Count()>0)
-            {
-                extensionsModel = this.FileExtensList.Where(fe => fe.ID == 3).ToList()[0];
-            }
-            else
+            if (components.Count()>0)
             {
                 extensionsModel = this.FileExtensList.Where(fe => fe.ID == 2).ToList()[0];
             }
+            else
+            {
+                extensionsModel = this.FileExtensList.Where(fe => fe.ID == 1).ToList()[0];
+            }
+
             this.ImageUrl = "data:image/vnd.microsoft.icon;base64," + Convert.ToBase64String(extensionsModel.Icon);
         }
 

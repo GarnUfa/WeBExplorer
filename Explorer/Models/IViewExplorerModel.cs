@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Explorer.Services.Linker;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace Explorer.Models
     public interface IViewExplorerModel
     {
         public void AddGroupedComponents();
-        public void AddAllComponentsFromDB(ExplorerContext context);
+        public List<Component> AddAllComponentsFromDB(ExplorerContext context);
 
     }
 }
